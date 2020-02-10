@@ -1,78 +1,125 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+import sys, os
 
-class Host:
+sys.path.append(os.path.abspath('./Modules/'))
 
-	def __init__(self):
-		self.dominio = []
-		self.dominios_txt = '';
+import Host, Apache2, DevNux
 
-	def save(self):
-		tamanho = len(self.dominio)
-		lista_hosts = range(tamanho)
-
-		# Percorre todos os hosts informados,
-		# cria-se uma string para salvar
-		for i in lista_hosts:
-			self.dominios_txt += '\n' + self.dominio[i]['ip'] + '		' + self.dominio[i]['domain'] + '\n'
-
-		# Salva o host
-		with open('/etc/hosts', 'rt') as file:
-			hosts_conteudo = file.read()
-			with open('/tmp/etc_hosts.tmp', 'wt') as outf:
-				outf.write(hosts_conteudo)
-				outf.write(self.dominios_txt);
-	
-		os.system('sudo mv /tmp/etc_hosts.tmp /etc/hosts')
-		return 'Host salvo com sucesso.'
-
-	def add(self, domain = '', ip = '127.0.0.1'):
-
-		new_host = {
-			'ip': ip,
-			'domain': domain
-		}
-
-		self.dominio.append(new_host)
-		return 'Novo Host adicionado a lista'
-
-	def getDominios(self):
-		return self.dominio;
-
-
-host = Host()
+Host = Host()
+Apache2 = Apache2()
+DevNux = DevNux()
 
 while True:
 
-	print('########### HOSTS ###########')
-	print('1) Adicionar um host')
-	print('2) Ver oque está na lista')
-	print('3) Salvar o que está na lista')
+	DevNux.clear()
+	print('########### VIRTUAL-HOSTS ###########')
+	print('\n')
+	print('1) Host')
+	print('2) Apache2')
+	print('3) Hosts & Apache2')
+	print('0) Sair')
+
 	acao = input('')
-	domain = '';
 
-	# Adicionando um host
-	if acao == '1':
+	DevNux.clear()
 
-		print('Informe o domínio')
-		domain = input('')
+	if(acao == '1'):
+
+		while True:
+
+			DevNux.clear()
+			print('########### VIRTUAL-HOSTS > HOSTS ###########')
+			print('\n')
+			print('1) Adicionar um novo Host')
+			print('2) Ver Carrinho')
+			print('3) Salvar tudo')
+			print('4) Listar todos do arquivo .hosts')
+			print('0) Voltar')
+			
+			acaoHost = input('')
+			domain = '';
+
+			DevNux.clear()
+			
+			if acaoHost == '1':
+
+				print('Informe o domínio')
+				domain = input('')
+				
+				print('Informe o IP')
+				ip = input('')
+
+				if ip == '':
+					ip = '127.0.0.1'
+
+				res = Host.add(domain, ip)
+				print(res)
+				input('Pressione Enter para voltar')
+
+			# Retorna a Lista de Hosts, oque estão na lista para serem salvos
+			if acaoHost == '2':
+
+				res = Host.getDominios()
+
+				if(len(res) == 0):
+					print('Nenhum host adicionado no carrinho.')
+				else:
+					print(res)
+
+				input('Pressione Enter para voltar.')
+
+			# Salva os hosts que estão na Lista
+			if acaoHost == '3':
+
+				res = Host.save()
+				print(res)
+				input('Pressione Enter para voltar.')
+
+			# Exibe todos os hosts que estão no .hosts
+			if acaoHost == '4':
+
+				res = Host.getAll()
+
+				if(len(res) == 0):
+					print('Nenhum host configurado no arquivo ".hosts".')
+				else:
+					for i in range(0, len(res)):
+						print(res[i])
+
+				input('Pressione Enter para voltar.')
+
+			# Se for Voltar ao Menu
+			if(acaoHost == '0'):
+				break
+
+
+	# Se for Sair
+	if(acao == '0'):
+		print('CYA.. :*')
+		break
+
+	# # Adicionando um host
+	# if acao == '1':
+
+	# 	print('Informe o domínio')
+	# 	domain = input('')
 		
-		print('Informe o IP')
-		ip = input('')
+	# 	print('Informe o IP')
+	# 	ip = input('')
 
-		if ip == '':
-			ip = '127.0.0.1'
+	# 	if ip == '':
+	# 		ip = '127.0.0.1'
 
-		res = host.add(domain, ip)
-		print(res)
+	# 	res = Host.add(domain, ip)
+	# 	print(res)
 
-	# Ver oque está na lista
-	if acao == '2':
-		print(host.getDominios())
+	# # Ver oque está na lista
+	# if acao == '2':
+	# 	print(Host.getDominios())
 
-	# Salva os hosts que estão na Lista
-	if acao == '3':
-		res = host.save()
-		print(res)
+	# # Salva os hosts que estão na Lista
+	# if acao == '3':
+	# 	res = Host.save()
+	# 	print(res)
