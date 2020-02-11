@@ -3,11 +3,6 @@
 
 import sys, os
 
-from os.path import join, dirname
-
-import dotenv
-dir(dotenv)
-
 sys.path.append(os.path.abspath('./Modules/'))
 
 import Host, Apache2, DevNux
