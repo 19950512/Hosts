@@ -26,6 +26,22 @@ class Apache2:
 
 		return 'Virtuais-Hosts salvo com sucesso.'
 
+	# Remove um dominio
+	def remove(self, domain):
+
+		check = self.exist(domain)
+
+		# Se o dominio informado existe, então remove ele
+		if(check):
+			try:
+				os.system('sudo rm -rfv /etc/apache2/sites-enabled/' + domain + '.conf')
+				return 'Feito, host-virtual removido com sucesso.'
+			except Exception as e:
+				return 'Ops, não consegui remover esse host-virtual, sei lá oque houve...'
+
+		return 'Bro, eu não achei nenhum host-virtual com esse dominio.'
+
+
 	# Adiciona um novo host-virtual
 	def add(self, domain = '', diretorio = ''):
 

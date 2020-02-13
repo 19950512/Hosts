@@ -8,6 +8,18 @@ class Host:
 	def __init__(self):
 		self.dominio = []
 		self.dominios_txt = '';
+	
+	def toString(self, s):  
+
+		# initialize an empty string 
+		str1 = ""  
+
+		# traverse in the string   
+		for ele in s:  
+			str1 += ele   
+
+		# return string   
+		return str1 
 
 	def save(self):
 		tamanho = len(self.dominio)
@@ -32,6 +44,58 @@ class Host:
 		self.dominios_txt = ''
 
 		return 'Host salvo com sucesso.'
+
+	# Remove um dominio do .hosts
+	def remove(self, domain):
+
+		# Precisamos verificar se no arquivo .hosts já existe esse dominio
+
+		# lista com todos os hosts configurados no .hosts
+		hosts = self.getAll()
+
+		# verifica se o dominio existe no arquivo
+		res = self.exist(hosts, domain)
+
+		# O domínio existe, então o conteúdo do arquivo deve ser alterado.
+		if(res):
+
+			# temp = novo arquivo de hosts, sem o dominio informado
+			temp = []
+			try:
+				for i in range(0, len(hosts)):
+
+					# host[0] = IP
+					# host[1] = Domain
+					host = hosts[i].split('\t')
+
+					if(host[1].rstrip() != domain):
+						temp.append(hosts[i])
+
+			except Exception as e:
+				return 'Ops, parece que está fora do padrão o arquivo de hosts, deve conter um ENTER, um TAB, verefique o arquivo e tente novamente.'
+
+			# converte array/list para string
+			temp = self.toString(temp)
+
+			# Chegou até aqui, é só salvar.
+			
+			# OBS: Esse trecho para baixo, precisa criar uma função para isso e reutilizar em outros metodos, não faço isso porque estou sem tempo agora. kk
+
+			# Salva o host
+			try:
+				with open('/etc/hosts', 'rt') as file:
+					with open('/tmp/etc_hosts.tmp', 'wt') as outf:
+						outf.write(temp);
+
+				os.system('sudo mv /tmp/etc_hosts.tmp /etc/hosts')
+				
+				return 'Pronto, dominio removido do arquivo de hosts.'
+
+			except Exception as e:
+				return 'Ops, não consegui finalizar a parada. feels bad man. :|'
+
+		return 'Ops, parece que o domínio "' + domain + '" não existe no arquivo .hosts'
+
 
 	# Adiciona um host a lista dos Hosts
 	def add(self, domain = '', ip = '127.0.0.1'):
@@ -64,9 +128,11 @@ class Host:
 			# host[0] = IP
 			# host[1] = Domain
 			host = hosts[i].split('\t')
-
-			if(host[1].rstrip() == domain):
-				return True
+			try:
+				if(host[1].rstrip() == domain):
+					return True
+			except Exception as e:
+				return False
 
 		return False
 
