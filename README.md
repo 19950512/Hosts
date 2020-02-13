@@ -1,5 +1,7 @@
 <h1>Como configura?</h1>
 
+<p>OBS: <i>Script escrito para rodar em Linux, nas proximas atualizações, talves, com muito esforço eu faça para windows</i></p>
+
 <h3>Primeiro..</h3>
 <ul>
   <li>Clonar o projeto. <strong>git clone https://github.com/19950512/Hosts.git</strong></li>
