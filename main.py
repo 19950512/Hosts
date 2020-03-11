@@ -37,13 +37,14 @@ while True:
 			print('2) Ver Carrinho')
 			print('3) Salvar tudo')
 			print('4) Listar todos do arquivo .hosts')
+			print('5) Excluir um Host')
 			print('0) Voltar')
 			
 			acaoHost = input('')
 			domain = '';
 
 			DevNux.clear()
-			
+
 			if acaoHost == '1':
 
 				print('Informe o domínio')
@@ -91,6 +92,15 @@ while True:
 
 				input('Pressione Enter para voltar.')
 
+			if acaoHost == '5':
+
+				print('Informe o domínio')
+				domain = input('')
+				
+				res = Host.remove(domain)
+				print(res)
+				input('Pressione Enter para voltar')
+
 			# Se for Voltar ao Menu
 			if(acaoHost == '0'):
 				break
@@ -108,6 +118,7 @@ while True:
 			print('2) Ver Carrinho')
 			print('3) Salvar tudo')
 			print('4) Listar todos do arquivo .hosts')
+			print('5) Excluír um Host-Virtual')
 			print('0) Voltar')
 			
 			acaoApache = input('')
@@ -158,6 +169,16 @@ while True:
 					for i in range(0, len(res)):
 						print(res[i])
 
+				input('Pressione Enter para voltar.')
+
+			# Exclui um host-virtual pelo dominio
+			if acaoApache == '5':
+
+				print('Informe o domínio')
+				domain = input('')
+
+				res = Apache2.remove(domain)
+				print(res)
 				input('Pressione Enter para voltar.')
 			
 
