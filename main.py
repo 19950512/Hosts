@@ -134,6 +134,23 @@ while True:
 				print('Informe o diretório do projeto')
 				diretorio = input('')
 
+				print('Tem sub-dominio?')
+				print('1) SIM')
+				print('2) NÃO')
+
+				acaosub = input('')
+
+				# Reset variaveis
+				subdomain = ''
+				subdiretorio = ''
+
+				if acaosub == '1':
+					print('Informe o sub-domínio')
+					subdomain = input('')
+					
+					print('Informe o diretório do sub-dominio')
+					subdiretorio = input('')
+
 				res = Apache2.add(domain, diretorio)
 				print(res)
 				input('Pressione Enter para voltar')

@@ -16,7 +16,6 @@ class Apache2:
 			with open('/tmp/' + self.dominio[i]['domain'] + '_temp.tmp', 'wt') as outf:
 				outf.write(self.dominio[i]['text']);
 
-
 			os.system('sudo mv /tmp/' + self.dominio[i]['domain'] + '_temp.tmp /etc/apache2/sites-enabled/' + self.dominio[i]['domain'] + '.conf')
 
 		# Reset atributos
@@ -56,7 +55,8 @@ class Apache2:
 		if(res):
 			return 'Ops, parece que o domínio "' + domain + '" já está configurado no Virtual Host do Apache2'
 
-		mascara = "<VirtualHost *:80>\n"
+		mascara = "# HTTP \n";
+		mascara += "<VirtualHost *:80>\n"
 		mascara += "\tServerName " + domain +"\n"
 		mascara +=	"\tServerAdmin webmaster@localhost\n"
 		mascara +=	"\tDocumentRoot " + diretorio  + "\n"
@@ -67,6 +67,24 @@ class Apache2:
 		mascara +=	"\t\t\tallow from all\n"
 		mascara +=	"\t\t\tRequire all granted\n"
 		mascara +=	"\t\t</Directory>\n"
+		mascara += "</VirtualHost>\n"
+
+		mascara += "# HTTPS \n";
+		mascara += "<VirtualHost *:443>\n"
+		mascara += "\tServerName " + domain +"\n"
+		mascara +=	"\tServerAdmin webmaster@localhost\n"
+		mascara +=	"\tDocumentRoot " + diretorio  + "\n"
+		mascara +=	"\t<Directory " + diretorio  + "/>\n"
+		mascara +=	"\t\tOptions Indexes FollowSymLinks MultiViews\n"
+		mascara +=	"\t\tAllowOverride All\n"
+		mascara +=	"\t\tOrder allow,deny\n"
+		mascara +=	"\t\tallow from all\n"
+		mascara +=	"\t\tRequire all granted\n"
+		mascara +=	"\t</Directory>\n"
+		mascara +=	"\n"
+		mascara +=	"\tRewriteEngine on\n"
+		mascara +=	"\tRewriteCond %{SERVER_NAME} =" + domain + "\n";
+		mascara +=	"\tRewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]\n";
 		mascara += "</VirtualHost>\n"
 
 		hostVirtual = {
