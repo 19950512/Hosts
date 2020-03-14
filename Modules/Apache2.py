@@ -86,8 +86,8 @@ class Apache2:
 		mascara +=	"\t\tRequire all granted\n"
 		mascara +=	"\t</Directory>\n"
 		mascara +=	"\n"
-		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "fullchain.pem\n"
-		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "privkey.pem\n"
+		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "/fullchain.pem\n"
+		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "/privkey.pem\n"
 		mascara += "\tInclude /etc/letsencrypt/options-ssl-apache.conf\n"
 		mascara += "</VirtualHost>\n"
 
