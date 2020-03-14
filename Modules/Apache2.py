@@ -67,6 +67,10 @@ class Apache2:
 		mascara +=	"\t\t\tallow from all\n"
 		mascara +=	"\t\t\tRequire all granted\n"
 		mascara +=	"\t\t</Directory>\n"
+		mascara +=	"\tRewriteEngine on\n"
+		mascara += "\n"
+		mascara +=	"\tRewriteCond %{SERVER_NAME} =" + domain + "\n";
+		mascara +=	"\tRewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]\n";
 		mascara += "</VirtualHost>\n"
 
 		mascara += "# HTTPS \n";
@@ -82,9 +86,9 @@ class Apache2:
 		mascara +=	"\t\tRequire all granted\n"
 		mascara +=	"\t</Directory>\n"
 		mascara +=	"\n"
-		mascara +=	"\tRewriteEngine on\n"
-		mascara +=	"\tRewriteCond %{SERVER_NAME} =" + domain + "\n";
-		mascara +=	"\tRewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]\n";
+		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "fullchain.pem\n"
+		mascara += "\tSSLCertificateFile /etc/letsencrypt/live/" + domain + "privkey.pem\n"
+		mascara += "\tInclude /etc/letsencrypt/options-ssl-apache.conf\n"
 		mascara += "</VirtualHost>\n"
 
 		hostVirtual = {
