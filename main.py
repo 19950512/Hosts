@@ -11,6 +11,46 @@ Host 	= Host()
 Apache2 = Apache2()
 DevNux 	= DevNux()
 
+def index_in_list(a_list, index):
+    
+	if(index < len(a_list)):
+		return True
+	
+	return False
+
+# CASO PASSE ARGUMENTOS.
+# python3 main.py dominio.local /home/path/do/dominio
+if(index_in_list(sys.argv, 1) and index_in_list(sys.argv, 2) and sys.argv[1] != '' and sys.argv[2]):
+	#print('Informe o domínio')
+	domain = sys.argv[1]
+
+	#print('Informe o diretório do projeto')
+	diretorio = sys.argv[2]
+
+	# Host-Virtual
+	res = Apache2.add(domain, diretorio)
+	print(res)
+	#input('Pressione Enter para voltar')
+
+	# Host
+	ip = '127.0.0.1'
+	res = Host.add(domain, ip)
+	print(res)
+	#input('Pressione Enter para voltar')
+
+	# SALVAR
+
+	# Apache2
+	res = Apache2.save()
+	print(res)
+	#input('Pressione Enter para voltar.')
+
+	# Hosts
+	res = Host.save()
+	print(res)
+	#input('Pressione Enter para voltar.')
+	exit()
+
 while True:
 
 	DevNux.clear()
